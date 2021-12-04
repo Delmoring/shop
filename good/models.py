@@ -10,6 +10,7 @@ class Good(models.Model):
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
     time_update = models.DateTimeField(auto_now=True, verbose_name="Время изменения")
     is_published = models.BooleanField(default=True, verbose_name="Публикация")
+    price = models.IntegerField(default=True, verbose_name="Цена")
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name="Категории")
 
     def __str__(self):
