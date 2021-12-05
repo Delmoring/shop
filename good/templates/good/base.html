@@ -5,6 +5,13 @@
     <title>Главная страница</title>
 </head>
 <body>
+<ul>
+{% for p in phone %}
+<li>{{p.cat_name}}</li>
+<li>{{p.model}}</li>
+
+{% endfor %}
+<ul>
 
 </body>
 </html>

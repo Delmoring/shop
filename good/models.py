@@ -14,7 +14,7 @@ class Good(models.Model):
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name="Категории")
 
     def __str__(self):
-        return self.cat_name
+        return self.model
 
     class Category(models.Model):
         name = models.CharField(max_length=100, db_index=True)
