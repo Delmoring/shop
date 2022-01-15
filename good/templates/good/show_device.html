@@ -1,6 +1,10 @@
 {% extends 'good/base.html' %}
 {% load static %}
 {% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'good/styles/product_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'good/styles/product_responsive.css' %}">
+
 <!-- Single Product -->
 
 	<div class="single_product">
@@ -73,29 +77,6 @@
 			</div>
 		</div>
 	</div>
+
 {% endblock %}
 
-<!--<meta charset="utf-8">-->
-<!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
-<!--<meta name="description" content="OneTech shop project">-->
-<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
-<!--<link rel="stylesheet" type="text/css" href="{% static 'good/styles/bootstrap4/bootstrap.min.css' %}">-->
-<!--<link href="{% static 'good/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css' %}" rel="stylesheet" type="text/css">-->
-<!--<link rel="stylesheet" type="text/css" href="{% static 'good/plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}">-->
-<!--<link rel="stylesheet" type="text/css" href="{% static 'good/plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">-->
-<!--<link rel="stylesheet" type="text/css" href="{% static 'good/plugins/OwlCarousel2-2.2.1/animate.css' %}">-->
-<!--<link rel="stylesheet" type="text/css" href="{% static 'good/styles/product_styles.css' %}">-->
-<!--<link rel="stylesheet" type="text/css" href="{% static 'good/styles/product_responsive.css' %}">-->
-
-<!--<script src="{% static 'good/js/jquery-3.3.1.min.js' %}"></script>-->
-<!--<script src="{% static 'good/styles/bootstrap4/popper.js' %}"></script>-->
-<!--<script src="{% static 'good/styles/bootstrap4/bootstrap.min.js' %}"></script>-->
-<!--<script src="{% static 'good/plugins/greensock/TweenMax.min.js' %}"></script>-->
-<!--<script src="{% static 'good/plugins/greensock/TimelineMax.min.js' %}"></script>-->
-<!--<script src="{% static 'good/plugins/scrollmagic/ScrollMagic.min.js' %}"></script>-->
-<!--<script src="{% static 'good/plugins/greensock/animation.gsap.min.js' %}"></script>-->
-<!--<script src="{% static 'good/plugins/greensock/ScrollToPlugin.min.js' %}"></script>-->
-<!--<script src="{% static 'good/plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>-->
-<!--<script src="{% static 'good/plugins/easing/easing.js' %}"></script>-->
-<!--<script src="{% static 'good/js/product_custom.js' %}"></script>-->
-<!--</body>-->

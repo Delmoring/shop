@@ -24,11 +24,14 @@
 						<div class="sidebar_section">
 							<div class="sidebar_title">Категории</div>
 							<ul class="sidebar_categories">
-								<li><a href="#">Смартфоны</a></li>
-								<li><a href="#">Ноутбуки</a></li>
-								<li><a href="#">Принтеры</a></li>
+							{% for c in cats %}
+								<li><a href="{{c.get_absolute_url}}">{{ c.name }}</a></li>
+<!--								<li><a href="#">Ноутбуки</a></li>-->
+<!--								<li><a href="#">Принтеры</a></li>-->
+							{% endfor %}
 							</ul>
 						</div>
+
 						<div class="sidebar_section filter_by_section">
 							<div class="sidebar_title">Фильтр:</div>
 							<div class="sidebar_subtitle">Цена</div>
