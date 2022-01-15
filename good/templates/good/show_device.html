@@ -24,10 +24,10 @@
 				<!-- Description -->
 				<div class="col-lg-5 order-3">
 					<div class="product_description">
-						<div class="product_category">Laptops</div>
-						<div class="product_name">MacBook Air 13</div>
+						<div class="product_category">{{ show_device.cat_name }}</div>
+						<div class="product_name">{{ show_device }}</div>
 						<div class="rating_r rating_r_4 product_rating"><i></i><i></i><i></i><i></i><i></i></div>
-						<div class="product_text"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas fermentum. laoreet turpis, nec sollicitudin dolor cursus at. Maecenas aliquet, dolor a faucibus efficitur, nisi tellus cursus urna, eget dictum lacus turpis.</p></div>
+						<div class="product_text"><p>{{ show_device.specifications }}</p></div>
 						<div class="order_info d-flex flex-row">
 							<form action="#">
 								<div class="clearfix" style="z-index: 1000;">
@@ -59,9 +59,9 @@
 
 								</div>
 
-								<div class="product_price">$2000</div>
+								<div class="product_price">₽{{ show_device.price }}</div>
 								<div class="button_container">
-									<button type="button" class="button cart_button">Add to Cart</button>
+									<button type="button" class="button cart_button">Добавить в корзину</button>
 									<div class="product_fav"><i class="fas fa-heart"></i></div>
 								</div>
 

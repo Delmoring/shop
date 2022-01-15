@@ -7,6 +7,6 @@ from .views import *
 
 urlpatterns = [
                   path('', test_out, name='test'),
-                  path('test/', test2, name='test2')
+                  path('show_good/<slug:good_slug>/', show_good, name='show_good')
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

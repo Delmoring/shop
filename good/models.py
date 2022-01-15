@@ -7,6 +7,8 @@ class Good(models.Model):
     model = models.CharField(max_length=255, verbose_name="Модель")
     specifications = models.TextField(blank=True, verbose_name="Технические характеристики")
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Фото")
+    photo2 = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Дополнительное фото(2)")
+    photo3 = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Дополнительное фото(3)")
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
     time_update = models.DateTimeField(auto_now=True, verbose_name="Время изменения")
     is_published = models.BooleanField(default=True, verbose_name="Публикация")
@@ -17,7 +19,7 @@ class Good(models.Model):
         return self.model
 
     def get_absolute_url(self):
-        return reverse('test', kwargs={'test_slug': self.slug})
+        return reverse('show_good', kwargs={'good_slug': self.slug})
 
     class Category(models.Model):
         name = models.CharField(max_length=100, db_index=True)
