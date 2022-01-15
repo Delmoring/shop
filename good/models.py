@@ -16,6 +16,9 @@ class Good(models.Model):
     def __str__(self):
         return self.model
 
+    def get_absolute_url(self):
+        return reverse('test', kwargs={'test_slug': self.slug})
+
     class Category(models.Model):
         name = models.CharField(max_length=100, db_index=True)
         slug = models.SlugField(max_length=255, unique=True, db_index=True)
