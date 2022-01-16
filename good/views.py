@@ -25,7 +25,6 @@ def show_good(request, good_slug):
     return render(request, 'good/show_device.html', {'show_device': show_device})
 
 def show_category(request, cat_id):
-    #return HttpResponse(f"Отображение статьи со слагом = {cat_slug}")
     good = Good.objects.filter(cat_id=cat_id)
 
     context = {

@@ -22,7 +22,9 @@
 					<!-- Shop Sidebar -->
 					<div class="shop_sidebar">
 						<div class="sidebar_section">
-							<div class="sidebar_title">Категории</div>
+							<div class="sidebar_title"><a href="{% url 'test' %}">Все категории</a></div>
+
+<!--							<div class="sidebar_title">Категории</div>-->
 							<ul class="sidebar_categories">
 							{% for c in cats %}
 								<li><a href="{{c.get_absolute_url}}">{{ c.name }}</a></li>
