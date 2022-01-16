@@ -39,9 +39,6 @@ def show_category(request, cat_slug):
 
     return render(request, 'good/index.html', context=context)
 
-# def login(request):
-#     return HttpResponse("Авторизация")
-
 
 class RegisterUser(CreateView):
     form_class = UserCreationForm
