@@ -9,4 +9,7 @@ urlpatterns = [
                   path('', test_out, name='test'),
                   path('show_good/<slug:good_slug>/', show_good, name='show_good'),
                   path('show_category/<slug:cat_slug>', show_category, name='show_category'),
+                  path('register', RegisterUser.as_view(), name='register'),
+                  path('login', LoginUser.as_view(), name='login'),
+                  path('logout', logout_user, name='logout'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

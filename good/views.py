@@ -38,3 +38,23 @@ def show_category(request, cat_slug):
         raise Http404()
 
     return render(request, 'good/index.html', context=context)
+
+# def login(request):
+#     return HttpResponse("Авторизация")
+
+
+class RegisterUser(CreateView):
+    form_class = UserCreationForm
+    template_name = 'good/register.html'
+    success_url = reverse_lazy('login')
+
+class LoginUser(LoginView):
+    form_class = AuthenticationForm
+    template_name = 'good/login.html'
+
+    def get_success_url(self):
+        return reverse_lazy('test')
+
+def logout_user(request):
+    logout(request)
+    return redirect('login')
