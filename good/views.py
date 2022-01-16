@@ -25,11 +25,16 @@ def show_good(request, good_slug):
     return render(request, 'good/show_device.html', {'show_device': show_device})
 
 def show_category(request, cat_id):
-    return HttpResponse(f"Отображение статьи с id = {cat_id}")
-    # goods = Good.objects.filter(cat_name=cat_slug)
-    #  goods = Good.objects.get(pk=1)
-    #
-    # if len(goods) == 0:
-    #     raise Http404()
-    #
-    # return render(request, 'good/index.html', {'goods': goods})
+    #return HttpResponse(f"Отображение статьи со слагом = {cat_slug}")
+    good = Good.objects.filter(cat_id=cat_id)
+
+    context = {
+        'cats': cats,
+        'good': good,
+        }
+
+
+    if len(good) == 0:
+        raise Http404()
+
+    return render(request, 'good/index.html', context=context)
