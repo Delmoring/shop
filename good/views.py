@@ -24,8 +24,9 @@ def show_good(request, good_slug):
     show_device = get_object_or_404(Good, slug=good_slug)
     return render(request, 'good/show_device.html', {'show_device': show_device})
 
-def show_category(request, cat_id):
-    good = Good.objects.filter(cat_id=cat_id)
+def show_category(request, cat_slug):
+    c = Category.objects.get(slug=cat_slug)
+    good = Good.objects.filter(cat_id = c.pk)
 
     context = {
         'cats': cats,
