@@ -19,6 +19,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'good/styles/shop_responsive.css' %}">
 
 
+
 </head>
 
 <body>
@@ -82,7 +83,7 @@
 					<!-- Logo -->
 					<div class="col-lg-2 col-sm-3 col-3 order-1">
 						<div class="logo_container">
-							<div class="logo"><a href="{% url 'test' %}">SuperShop</a></div>
+							<div class="logo"><a href="{% url 'index' %}">SuperShop</a></div>
 						</div>
 					</div>
 
@@ -120,7 +121,7 @@
 							<div class="wishlist d-flex flex-row align-items-center justify-content-end">
 								<div class="wishlist_icon"><img src="{% static 'good/images/heart.png' %}" alt=""></div>
 								<div class="wishlist_content">
-									<div class="wishlist_text"><a href="#">Пожелания</a></div>
+									<div class="wishlist_text"><a href="{% url 'empty_page' %}">Пожелания</a></div>
 									<div class="wishlist_count">0</div>
 								</div>
 							</div>
@@ -133,7 +134,7 @@
 										<div class="cart_count"><span>0</span></div>
 									</div>
 									<div class="cart_content">
-										<div class="cart_text"><a href="#">Корзина</a></div>
+										<div class="cart_text"><a href="{% url 'empty_page' %}">Корзина</a></div>
 										<div class="cart_price">₽0</div>
 									</div>
 								</div>
@@ -144,105 +145,7 @@
 			</div>
 		</div>
 		
-<!--		&lt;!&ndash; Main Navigation &ndash;&gt;-->
 
-<!--		<nav class="main_nav">-->
-<!--			<div class="container">-->
-<!--				<div class="row">-->
-<!--					<div class="col">-->
-<!--						-->
-<!--						<div class="main_nav_content d-flex flex-row">-->
-
-<!--							&lt;!&ndash; Categories Menu &ndash;&gt;-->
-
-<!--							<div class="cat_menu_container">-->
-<!--								<div class="cat_menu_title d-flex flex-row align-items-center justify-content-start">-->
-<!--									<div class="cat_burger"><span></span><span></span><span></span></div>-->
-<!--									<div class="cat_menu_text">Категории</div>-->
-<!--								</div>-->
-
-<!--								<ul class="cat_menu">-->
-<!--									<li><a href="#">Компьютеры и ноутбуки <i class="fas fa-chevron-right ml-auto"></i></a></li>-->
-<!--									<li><a href="#">Камеры и фото<i class="fas fa-chevron-right"></i></a></li>-->
-<!--									<li class="hassubs">-->
-<!--										<a href="#">Запчасти<i class="fas fa-chevron-right"></i></a>-->
-<!--										<ul>-->
-<!--											<li class="hassubs">-->
-<!--												<a href="#">Menu Item<i class="fas fa-chevron-right"></i></a>-->
-<!--												<ul>-->
-<!--													<li><a href="#">Menu Item<i class="fas fa-chevron-right"></i></a></li>-->
-<!--													<li><a href="#">Menu Item<i class="fas fa-chevron-right"></i></a></li>-->
-<!--													<li><a href="#">Menu Item<i class="fas fa-chevron-right"></i></a></li>-->
-<!--													<li><a href="#">Menu Item<i class="fas fa-chevron-right"></i></a></li>-->
-<!--												</ul>-->
-<!--											</li>-->
-<!--											<li><a href="#">Menu Item<i class="fas fa-chevron-right"></i></a></li>-->
-<!--											<li><a href="#">Menu Item<i class="fas fa-chevron-right"></i></a></li>-->
-<!--											<li><a href="#">Menu Item<i class="fas fa-chevron-right"></i></a></li>-->
-<!--										</ul>-->
-<!--									</li>-->
-<!--									<li><a href="#">Смартфоны и планшеты<i class="fas fa-chevron-right"></i></a></li>-->
-<!--									<li><a href="#">ТВ и Аудио<i class="fas fa-chevron-right"></i></a></li>-->
-<!--									<li><a href="#">Другие устройства<i class="fas fa-chevron-right"></i></a></li>-->
-<!--									<li><a href="#">Электроника для авто<i class="fas fa-chevron-right"></i></a></li>-->
-<!--									<li><a href="#">Видео игры и консоли<i class="fas fa-chevron-right"></i></a></li>-->
-<!--									<li><a href="#">Аксессуары<i class="fas fa-chevron-right"></i></a></li>-->
-<!--								</ul>-->
-<!--							</div>-->
-
-<!--							&lt;!&ndash; Main Nav Menu &ndash;&gt;-->
-
-<!--							<div class="main_nav_menu ml-auto">-->
-<!--								<ul class="standard_dropdown main_nav_dropdown">-->
-<!--									<li><a href="#">Домашняя<i class="fas fa-chevron-down"></i></a></li>-->
-<!--									<li class="hassubs">-->
-<!--										<a href="#">Предложения<i class="fas fa-chevron-down"></i></a>-->
-<!--										<ul>-->
-<!--											<li>-->
-<!--												<a href="#">Menu Item<i class="fas fa-chevron-down"></i></a>-->
-<!--												<ul>-->
-<!--													<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>-->
-<!--													<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>-->
-<!--													<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>-->
-<!--												</ul>-->
-<!--											</li>-->
-<!--											<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>-->
-<!--											<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>-->
-<!--											<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>-->
-<!--										</ul>-->
-<!--									</li>-->
-<!--									<li class="hassubs">-->
-<!--										<a href="#">Знаменитые бренды<i class="fas fa-chevron-down"></i></a>-->
-<!--										<ul>-->
-<!--											<li>-->
-<!--												<a href="#">Menu Item<i class="fas fa-chevron-down"></i></a>-->
-<!--												<ul>-->
-<!--													<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>-->
-<!--													<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>-->
-<!--													<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>-->
-<!--												</ul>-->
-<!--											</li>-->
-<!--											<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>-->
-<!--											<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>-->
-<!--											<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>-->
-<!--										</ul>-->
-<!--									</li>-->
-<!--									<li class="hassubs">-->
-<!--										<a href="#">Страницы<i class="fas fa-chevron-down"></i></a>-->
-<!--										<ul>-->
-<!--											<li><a href="shop.html">Shop<i class="fas fa-chevron-down"></i></a></li>-->
-<!--											<li><a href="product.html">Product<i class="fas fa-chevron-down"></i></a></li>-->
-<!--											<li><a href="blog.html">Blog<i class="fas fa-chevron-down"></i></a></li>-->
-<!--											<li><a href="blog_single.html">Blog Post<i class="fas fa-chevron-down"></i></a></li>-->
-<!--											<li><a href="regular.html">Regular Post<i class="fas fa-chevron-down"></i></a></li>-->
-<!--											<li><a href="cart.html">Cart<i class="fas fa-chevron-down"></i></a></li>-->
-<!--											<li><a href="contact.html">Contact<i class="fas fa-chevron-down"></i></a></li>-->
-<!--										</ul>-->
-<!--									</li>-->
-<!--									<li><a href="blog.html">Блог<i class="fas fa-chevron-down"></i></a></li>-->
-<!--									<li><a href="contact.html">Контакты<i class="fas fa-chevron-down"></i></a></li>-->
-<!--								</ul>-->
-<!--							</div>-->
 
 							<!-- Menu Trigger -->
 
@@ -352,30 +255,6 @@
 	{% block content %}
 	{% endblock %}
 	
-	<!-- Newsletter -->
-
-	<div class="newsletter">
-		<div class="container">
-			<div class="row">
-				<div class="col">
-					<div class="newsletter_container d-flex flex-lg-row flex-column align-items-lg-center align-items-center justify-content-lg-start justify-content-center">
-						<div class="newsletter_title_container">
-							<div class="newsletter_icon"><img src="images/send.png" alt=""></div>
-							<div class="newsletter_title">Sign up for Newsletter</div>
-							<div class="newsletter_text"><p>...and receive %20 coupon for first shopping.</p></div>
-						</div>
-						<div class="newsletter_content clearfix">
-							<form action="#" class="newsletter_form">
-								<input type="email" class="newsletter_input" required="required" placeholder="Enter your email address">
-								<button class="newsletter_button">Subscribe</button>
-							</form>
-							<div class="newsletter_unsubscribe_link"><a href="#">unsubscribe</a></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 
 	<!-- Footer -->
 
@@ -386,23 +265,15 @@
 				<div class="col-lg-3 footer_col">
 					<div class="footer_column footer_contact">
 						<div class="logo_container">
-							<div class="logo"><a href="#">OneTech</a></div>
+							<div class="logo"><a href="{% url 'index' %}">SuperShop</a></div>
 						</div>
-						<div class="footer_title">Got Question? Call Us 24/7</div>
-						<div class="footer_phone">+38 068 005 3570</div>
+						<div class="footer_title">Поддержка ёпт 24/7</div>
+						<div class="footer_phone">+7 023 493 33 33</div>
 						<div class="footer_contact_text">
-							<p>17 Princess Road, London</p>
-							<p>Grester London NW18JR, UK</p>
+							<p>Хуево</p>
+							<p>Кукуево</p>
 						</div>
-						<div class="footer_social">
-							<ul>
-								<li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-								<li><a href="#"><i class="fab fa-twitter"></i></a></li>
-								<li><a href="#"><i class="fab fa-youtube"></i></a></li>
-								<li><a href="#"><i class="fab fa-google"></i></a></li>
-								<li><a href="#"><i class="fab fa-vimeo-v"></i></a></li>
-							</ul>
-						</div>
+
 					</div>
 				</div>
 
@@ -410,15 +281,15 @@
 					<div class="footer_column">
 						<div class="footer_title">Find it Fast</div>
 						<ul class="footer_list">
-							<li><a href="#">Computers & Laptops</a></li>
-							<li><a href="#">Cameras & Photos</a></li>
-							<li><a href="#">Hardware</a></li>
-							<li><a href="#">Smartphones & Tablets</a></li>
-							<li><a href="#">TV & Audio</a></li>
+							<li><a href="#">Some text</a></li>
+							<li><a href="#">Some text</a></li>
+							<li><a href="#">Some text</a></li>
+							<li><a href="#">Some text</a></li>
+							<li><a href="#">Some text</a></li>
 						</ul>
-						<div class="footer_subtitle">Gadgets</div>
+						<div class="footer_subtitle">Some text</div>
 						<ul class="footer_list">
-							<li><a href="#">Car Electronics</a></li>
+							<li><a href="#">Some text</a></li>
 						</ul>
 					</div>
 				</div>
@@ -426,11 +297,11 @@
 				<div class="col-lg-2">
 					<div class="footer_column">
 						<ul class="footer_list footer_list_2">
-							<li><a href="#">Video Games & Consoles</a></li>
-							<li><a href="#">Accessories</a></li>
-							<li><a href="#">Cameras & Photos</a></li>
-							<li><a href="#">Hardware</a></li>
-							<li><a href="#">Computers & Laptops</a></li>
+							<li><a href="#">Some text</a></li>
+							<li><a href="#">Some text</a></li>
+							<li><a href="#">Some text</a></li>
+							<li><a href="#">Some text</a></li>
+							<li><a href="#">Some text</a></li>
 						</ul>
 					</div>
 				</div>
@@ -439,13 +310,13 @@
 					<div class="footer_column">
 						<div class="footer_title">Customer Care</div>
 						<ul class="footer_list">
-							<li><a href="#">My Account</a></li>
-							<li><a href="#">Order Tracking</a></li>
-							<li><a href="#">Wish List</a></li>
-							<li><a href="#">Customer Services</a></li>
-							<li><a href="#">Returns / Exchange</a></li>
-							<li><a href="#">FAQs</a></li>
-							<li><a href="#">Product Support</a></li>
+							<li><a href="#">Some text</a></li>
+							<li><a href="#">Some text</a></li>
+							<li><a href="#">Some text</a></li>
+							<li><a href="#">Some text</a></li>
+							<li><a href="#">Some text</a></li>
+							<li><a href="#">Some text</a></li>
+							<li><a href="#">Some text</a></li>
 						</ul>
 					</div>
 				</div>
@@ -463,7 +334,7 @@
 					
 					<div class="copyright_container d-flex flex-sm-row flex-column align-items-center justify-content-start">
 						<div class="copyright_content"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="#" target="_blank">anonymous</a>
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 </div>
 						<div class="logos ml-sm-auto">

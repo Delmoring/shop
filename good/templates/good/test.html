@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<p><img class="img-article-left thumb" src="{{good.photo.url}}"></p>
-</body>
-</html>
+{% extends 'good/base.html' %}
+
+{% block content %}
+
+<h1>Тестовая страница</h1>
+
+{% for contact in page_obj %}
+<p>{{ contact }}</p>
+{% endfor %}
+
+{% endblock %}

@@ -16,9 +16,14 @@ from .models import *
 
 good = Good.objects.all()
 cats = Category.objects.all()
-def test_out(request):
+def index(request):
+    # good_list = Good.objects.all()
+    paginator = Paginator(good, 2)
 
-    return render(request, 'good/index.html', {'good': good, 'cats': cats})
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'good/index.html', {'page_obj': page_obj, 'cats': cats, 'count': good.count()})
 
 def show_good(request, good_slug):
     show_device = get_object_or_404(Good, slug=good_slug)
@@ -28,9 +33,16 @@ def show_category(request, cat_slug):
     c = Category.objects.get(slug=cat_slug)
     good = Good.objects.filter(cat_id = c.pk)
 
+    paginator = Paginator(good, 2)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
+        'page_obj': page_obj,
         'cats': cats,
         'good': good,
+        'count': good.count()
         }
 
 
@@ -50,7 +62,7 @@ class LoginUser(LoginView):
     template_name = 'good/login.html'
 
     def get_success_url(self):
-        return reverse_lazy('test')
+        return reverse_lazy('index')
 
 def logout_user(request):
     logout(request)
@@ -58,3 +70,11 @@ def logout_user(request):
 
 def nothing(request):
     return HttpResponse("Пока нет ничего")
+
+# def about(request):
+#     good_list = Good.objects.all()
+#     paginator = Paginator(good_list, 2)
+#
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+#     return render (request, 'good/test.html', {'page_obj': page_obj})
