@@ -1,7 +1,7 @@
 {% extends 'good/base.html' %}
 {% load static %}
 {% block content %}
-<!--<link rel="stylesheet" type="text/css" href="{% static 'good/styles/styles.css' %}">-->
+
 <!-- Home -->
 
 	<div class="home">
@@ -65,29 +65,14 @@
 						</div>
 
 						<!-- Shop Page Navigation -->
-<!--						{% for p in page_obj.paginator.page_range %}-->
-<!--						<div class="shop_page_nav d-flex flex-row">-->
-<!--							<div class="page_prev d-flex flex-column align-items-center justify-content-center"><i class="fas fa-chevron-left"></i></div>-->
-<!--							<ul class="page_nav d-flex flex-row">-->
-<!--								<li><a href="{{ p }}">{{ p }}</a></li>-->
-<!--								<li><a href="#">2</a></li>-->
-<!--								<li><a href="#">3</a></li>-->
-<!--								<li><a href="#">...</a></li>-->
-<!--								<li><a href="#">21</a></li>-->
-<!--								{% endfor %}-->
-<!--							</ul>-->
 
-<!--							<div class="page_next d-flex flex-column align-items-center justify-content-center"><i class="fas fa-chevron-right"></i></div>-->
-<!--						</div>-->
-						<nav class = "list-pages">
+
 							<ul>
 								{% for p in page_obj.paginator.page_range  %}
-								<li class ="page-num">
-									<a href="?page={{ p }}">{{ p }}<a/>
-								</li>
+								</li><a href="?page={{ p }}">{{ p }}<a/></li>
 								{% endfor %}
 							</ul>
-						</nav>
+
 
 					</div>
 

@@ -71,10 +71,4 @@ def logout_user(request):
 def nothing(request):
     return HttpResponse("Пока нет ничего")
 
-# def about(request):
-#     good_list = Good.objects.all()
-#     paginator = Paginator(good_list, 2)
-#
-#     page_number = request.GET.get('page')
-#     page_obj = paginator.get_page(page_number)
-#     return render (request, 'good/test.html', {'page_obj': page_obj})
+
