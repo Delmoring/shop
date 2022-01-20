@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 class Good(models.Model):
     cat_name = models.CharField(max_length=255, verbose_name="Название устройства" )
@@ -14,6 +15,7 @@ class Good(models.Model):
     is_published = models.BooleanField(default=True, verbose_name="Публикация")
     price = models.IntegerField(default=True, verbose_name="Цена")
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name="Категории")
+    carts = models.ManyToManyField(User)
 
     def __str__(self):
         return self.model
