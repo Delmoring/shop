@@ -13,7 +13,8 @@ urlpatterns = [
                   path('login', LoginUser.as_view(), name='login'),
                   path('logout', logout_user, name='logout'),
                   path('empty_page', nothing, name='empty_page'),
-
+                  path('cart/', show_cart, name='cart'),
+                  path('add_to_card/', add_cart, name='add_cart'),
 
 
 
