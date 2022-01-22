@@ -15,7 +15,9 @@ class Good(models.Model):
     is_published = models.BooleanField(default=True, verbose_name="Публикация")
     price = models.IntegerField(default=True, verbose_name="Цена")
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name="Категории")
-    carts = models.ManyToManyField(User)
+    carts = models.ManyToManyField(User, through='isSaled', related_name='goods')
+
+
 
     def __str__(self):
         return self.model
@@ -32,3 +34,9 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         return reverse('show_category', kwargs={'cat_slug': self.slug})
+
+class isSaled(models.Model):
+    Good = models.ForeignKey(Good, on_delete=models.CASCADE)
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    in_carts = models.IntegerField(default=True)
