@@ -85,9 +85,12 @@ def show_cart(request):
 
 
 def add_cart(request, good_slug):
-    device = get_object_or_404(Goods, slug=good_slug)
-    return render(request, 'good/show_device.html', {'show_device': show_device})
-
+    if request.user.is_authenticated:
+        device = get_object_or_404(Goods, slug=good_slug)
+        u = User.objects.get(username=request.user)
+        new_good_in_cart = device.carts.add(u)
+        return render(request, 'good/show_device.html', {'show_device': device})
+    return HttpResponse("Для добавления товара в корзину необходимо быть авторизированным пользователем")
 
 
 def nothing(request):

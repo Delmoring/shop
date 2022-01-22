@@ -65,7 +65,7 @@
 
 								<div class="product_price">₽{{ show_device.price }}</div>
 								<div class="button_container">
-										<a href="{% url 'add_to_card' %}">Добавить в корзину</a>
+										<a href="{% url 'add_cart' show_device.slug %}">Добавить в корзину</a>
 <!--									<button type="button" class="button cart_button">Добавить в корзину</button>-->
 									<div class="product_fav"><i class="fas fa-heart"></i></div>
 								</div>
