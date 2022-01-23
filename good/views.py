@@ -79,9 +79,11 @@ def logout_user(request):
 
 def show_cart(request):
     devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
+    sum_order = 0
+    for device in devices_in_cart:
+        sum_order += device.price
 
-    return render(request, 'good/cart.html', {'devices_in_cart': devices_in_cart})
-
+    return render(request, 'good/cart.html', {'devices_in_cart': devices_in_cart, 'sum_order': sum_order})
 
 
 def add_cart(request, good_slug):
@@ -89,8 +91,9 @@ def add_cart(request, good_slug):
         device = get_object_or_404(Goods, slug=good_slug)
         u = User.objects.get(username=request.user)
         new_good_in_cart = device.carts.add(u)
+
         return render(request, 'good/show_device.html', {'show_device': device})
-    return HttpResponse("Для добавления товара в корзину необходимо быть авторизированным пользователем")
+    return HttpResponse("Для добавления товара в корзину необходимо быть авторизованным пользователем")
 
 
 def nothing(request):
