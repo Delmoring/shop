@@ -78,10 +78,10 @@ def logout_user(request):
 
 
 def show_cart(request):
-    if request.user.is_authenticated:
-        u = User.objects.get(username=request.user)
-        return HttpResponse(f"id текущего пользователя = id {u.pk}")
-    return HttpResponse("Для добавления товара в корзину необходимо быть авторизированным пользователем")
+    devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
+
+    return render(request, 'good/cart.html', {'devices_in_cart': devices_in_cart})
+
 
 
 def add_cart(request, good_slug):
