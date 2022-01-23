@@ -22,18 +22,27 @@ cats = Category.objects.all()
 
 
 def index(request):
-    # good_list = Good.objects.all()
     paginator = Paginator(goods, 2)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'good/index.html', {'page_obj': page_obj, 'cats': cats, 'count': goods.count()})
+    devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
+    sum_order = 0
+    for device in devices_in_cart:
+        sum_order += device.price
+
+    return render(request, 'good/index.html', {'page_obj': page_obj, 'cats': cats, 'count': goods.count(), 'sum_order': sum_order })
 
 
 def show_good(request, good_slug):
+    devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
+    sum_order = 0
+    for device in devices_in_cart:
+        sum_order += device.price
+
     show_device = get_object_or_404(Goods, slug=good_slug)
-    return render(request, 'good/show_device.html', {'show_device': show_device})
+    return render(request, 'good/show_device.html', {'show_device': show_device, 'sum_order': sum_order})
 
 
 def show_category(request, cat_slug):
@@ -45,11 +54,18 @@ def show_category(request, cat_slug):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
+    sum_order = 0
+    for device in devices_in_cart:
+        sum_order += device.price
+
     context = {
         'page_obj': page_obj,
         'cats': cats,
         'good': goods,
-        'count': goods.count()
+        'count': goods.count(),
+        'sum_order': sum_order,
+
     }
 
     if len(goods) == 0:
@@ -90,9 +106,14 @@ def add_cart(request, good_slug):
     if request.user.is_authenticated:
         device = get_object_or_404(Goods, slug=good_slug)
         u = User.objects.get(username=request.user)
-        new_good_in_cart = device.carts.add(u)
+        device.carts.add(u)
 
-        return render(request, 'good/show_device.html', {'show_device': device})
+        devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
+        sum_order = 0
+        for device in devices_in_cart:
+            sum_order += device.price
+
+        return render(request, 'good/show_device.html', {'show_device': device, 'sum_order': sum_order})
     return HttpResponse("Для добавления товара в корзину необходимо быть авторизованным пользователем")
 
 

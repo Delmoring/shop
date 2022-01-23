@@ -131,11 +131,11 @@
 								<div class="cart_container d-flex flex-row align-items-center justify-content-end">
 									<div class="cart_icon">
 										<img src="{% static 'good/images/cart.png' %}" alt="">
-										<div class="cart_count"><span>0</span></div>
+										<div class="cart_count"><span>{{ sum_order }}</span></div>
 									</div>
 									<div class="cart_content">
 										<div class="cart_text"><a href="{% url 'cart' %}">Корзина</a></div>
-										<div class="cart_price">₽0</div>
+										<div class="cart_price">₽{{ sum_order }}</div>
 									</div>
 								</div>
 							</div>
