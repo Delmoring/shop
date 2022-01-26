@@ -11,10 +11,10 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-# from .forms import *
+
 from .models import *
 
-# from .utils import *
+
 
 
 goods = Goods.objects.all()
@@ -28,16 +28,22 @@ def index(request):
     page_obj = paginator.get_page(page_number)
 
     devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
+    devices_in_cart = Goods.objects.filter(issaled__in_carts__startswith=1)
+
     sum_order = 0
     for device in devices_in_cart:
         sum_order += device.price
 
-    return render(request, 'good/index.html', {'page_obj': page_obj, 'cats': cats, 'count': goods.count(), 'sum_order': sum_order })
+    return render(request, 'good/index.html',
+                  {'page_obj': page_obj, 'cats': cats, 'count': goods.count(), 'sum_order': sum_order})
 
 
 def show_good(request, good_slug):
     devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
+    devices_in_cart = Goods.objects.filter(issaled__in_carts__startswith=1)
+
     sum_order = 0
+
     for device in devices_in_cart:
         sum_order += device.price
 
@@ -95,6 +101,7 @@ def logout_user(request):
 
 def show_cart(request):
     devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
+    devices_in_cart = Goods.objects.filter(issaled__in_carts__startswith=1)
     sum_order = 0
     for device in devices_in_cart:
         sum_order += device.price
@@ -109,6 +116,8 @@ def add_cart(request, good_slug):
         device.carts.add(u)
 
         devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
+        devices_in_cart = Goods.objects.filter(issaled__in_carts__startswith=1)
+
         sum_order = 0
         for device in devices_in_cart:
             sum_order += device.price
@@ -119,3 +128,16 @@ def add_cart(request, good_slug):
 
 def nothing(request):
     return HttpResponse("Пока нет ничего")
+
+
+def delete(request):
+    s = isSaled.objects.filter(User_id=request.user).update(in_carts=0)
+
+    devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
+    devices_in_cart = Goods.objects.filter(issaled__in_carts__startswith=1)
+
+    sum_order = 0
+    for device in devices_in_cart:
+        sum_order += device.price
+
+    return render(request, 'good/cart.html', {'devices_in_cart': devices_in_cart, 'sum_order': sum_order})

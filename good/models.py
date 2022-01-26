@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 
 
 class Goods(models.Model):
-    # cat_name = models.CharField(max_length=255, verbose_name="Название устройства" )
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     model = models.CharField(max_length=255, verbose_name="Модель")
     specifications = models.TextField(blank=True, verbose_name="Технические характеристики")

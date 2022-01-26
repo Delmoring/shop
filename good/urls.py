@@ -15,7 +15,7 @@ urlpatterns = [
                   path('empty_page', nothing, name='empty_page'),
                   path('cart/', show_cart, name='cart'),
                   path('add_cart/<slug:good_slug>', add_cart, name='add_cart'),
-
+                  path('del_cart/', delete, name='del_cart')
 
 
 

@@ -26,10 +26,7 @@
 											<div class="cart_item_title">Name</div>
 											<div class="cart_item_text">{{ device }}</div>
 										</div>
-<!--										<div class="cart_item_color cart_info_col">-->
-<!--											<div class="cart_item_title">Color</div>-->
-<!--											<div class="cart_item_text"><span style="background-color:#999999;"></span>Silver</div>-->
-<!--										</div>-->
+
 										<div class="cart_item_quantity cart_info_col">
 											<div class="cart_item_title">Quantity</div>
 											<div class="cart_item_text">1</div>
@@ -57,7 +54,7 @@
 
 						<div class="cart_buttons">
 <!--							<button type="button" class="button cart_button_clear">Add to Cart</button>-->
-							<button type="button" class="button cart_button_checkout">Buy</button>
+							<button type="button" class="button cart_button_checkout"><a href="{% url 'del_cart' %}">Buy</a></button>
 						</div>
 					</div>
 				</div>
