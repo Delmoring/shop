@@ -15,7 +15,7 @@ class Goods(models.Model):
     is_published = models.BooleanField(default=True, verbose_name="Публикация")
     price = models.IntegerField(default=True, verbose_name="Цена")
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name="Категории")
-    carts = models.ManyToManyField(User, through='isSaled', related_name='goods')
+    carts = models.ManyToManyField(User, through='Selling', related_name='goods')
 
     def __str__(self):
         return self.model
@@ -35,8 +35,11 @@ class Category(models.Model):
         return reverse('show_category', kwargs={'cat_slug': self.slug})
 
 
-class isSaled(models.Model):
+class Selling(models.Model):
     Goods = models.ForeignKey(Goods, on_delete=models.CASCADE)
     User = models.ForeignKey(User, on_delete=models.CASCADE)
+    count_goods = models.IntegerField(default=False)
 
-    in_carts = models.IntegerField(default=True)
+
+
+# Selling.objects.filter(User_id=2, Goods_id=1).update(count_goods=F('count_goods')+1)

@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
@@ -10,7 +11,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.db.models import F
 
 from .models import *
 
@@ -27,8 +28,8 @@ def index(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
-    devices_in_cart = Goods.objects.filter(issaled__in_carts__startswith=1)
+    devices_in_cart = Goods.objects.filter(carts=request.user)
+    # devices_in_cart = Goods.objects.filter(selling__in_carts__startswith=1)
 
     sum_order = 0
     for device in devices_in_cart:
@@ -39,8 +40,7 @@ def index(request):
 
 
 def show_good(request, good_slug):
-    devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
-    devices_in_cart = Goods.objects.filter(issaled__in_carts__startswith=1)
+    devices_in_cart = Goods.objects.filter(carts=request.user)
 
     sum_order = 0
 
@@ -60,7 +60,8 @@ def show_category(request, cat_slug):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
+    devices_in_cart = Goods.objects.filter(carts=request.user)
+
     sum_order = 0
     for device in devices_in_cart:
         sum_order += device.price
@@ -100,8 +101,8 @@ def logout_user(request):
 
 
 def show_cart(request):
-    devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
-    devices_in_cart = Goods.objects.filter(issaled__in_carts__startswith=1)
+    devices_in_cart = Goods.objects.filter(carts=request.user)
+
     sum_order = 0
     for device in devices_in_cart:
         sum_order += device.price
@@ -115,8 +116,8 @@ def add_cart(request, good_slug):
         u = User.objects.get(username=request.user)
         device.carts.add(u)
 
-        devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
-        devices_in_cart = Goods.objects.filter(issaled__in_carts__startswith=1)
+        devices_in_cart = Goods.objects.filter(carts=request.user)
+
 
         sum_order = 0
         for device in devices_in_cart:
@@ -131,12 +132,12 @@ def nothing(request):
 
 
 def delete(request):
-    s = isSaled.objects.filter(User_id=request.user).update(in_carts=0)
+    s = Selling.objects.filter(User_id=request.user).update(in_carts=0)
 
-    devices_in_cart = Goods.objects.filter(carts__username__startswith=request.user)
-    devices_in_cart = Goods.objects.filter(issaled__in_carts__startswith=1)
+    devices_in_cart = Goods.objects.filter(carts=request.user)
 
     sum_order = 0
+
     for device in devices_in_cart:
         sum_order += device.price
 
