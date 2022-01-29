@@ -102,12 +102,14 @@ def logout_user(request):
 
 def show_cart(request):
     devices_in_cart = Goods.objects.filter(carts=request.user)
+    count_goods = Selling.objects.filter(User_id=request.user)
+
 
     sum_order = 0
     for device in devices_in_cart:
         sum_order += device.price
 
-    return render(request, 'good/cart.html', {'devices_in_cart': devices_in_cart, 'sum_order': sum_order})
+    return render(request, 'good/cart.html', {'devices_in_cart': devices_in_cart, 'sum_order': sum_order, 'count_goods': count_goods})
 
 
 def add_cart(request, good_slug):
@@ -115,6 +117,9 @@ def add_cart(request, good_slug):
         device = get_object_or_404(Goods, slug=good_slug)
         u = User.objects.get(username=request.user)
         device.carts.add(u)
+
+        Selling.objects.get_or_create(User_id=request.user, Goods_id=device.pk)
+        Selling.objects.filter(User_id=request.user, Goods_id=device.pk).update(count_goods=F('count_goods')+1)
 
         devices_in_cart = Goods.objects.filter(carts=request.user)
 

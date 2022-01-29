@@ -16,6 +16,7 @@
 				<div class="col-lg-10 offset-lg-1">
 					<div class="cart_container">
 						<div class="cart_title">Shopping Cart</div>
+
 						{% for device in devices_in_cart %}
 						<div class="cart_items">
 							<ul class="cart_list">
@@ -28,9 +29,10 @@
 										</div>
 
 										<div class="cart_item_quantity cart_info_col">
-											<div class="cart_item_title">Quantity</div>
-											<div class="cart_item_text">1</div>
+    										<div class="cart_item_title">Quantity</div>
+    										<div class="cart_item_text">1</div>
 										</div>
+
 										<div class="cart_item_price cart_info_col">
 											<div class="cart_item_title">Price</div>
 											<div class="cart_item_text">₽{{ device.price }}</div>
@@ -43,6 +45,7 @@
 								</li>
 							</ul>
 						</div>
+
 						{% endfor %}
 						<!-- Order Total -->
 						<div class="order_total">
