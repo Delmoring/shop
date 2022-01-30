@@ -12,6 +12,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import F
+from django.forms.models import model_to_dict
 
 from .models import *
 
@@ -29,7 +30,7 @@ def index(request):
     page_obj = paginator.get_page(page_number)
 
     devices_in_cart = Goods.objects.filter(carts=request.user)
-    # devices_in_cart = Goods.objects.filter(selling__in_carts__startswith=1)
+
 
     sum_order = 0
     for device in devices_in_cart:
@@ -101,13 +102,17 @@ def logout_user(request):
 
 
 def show_cart(request):
-    devices_in_cart = Goods.objects.filter(carts=request.user)
-    count_goods = Selling.objects.filter(User_id=request.user)
+    # devices_in_cart = Goods.objects.filter(carts=request.user)
+    # count_goods = Selling.objects.filter(User_id=request.user)
 
+    count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
+    devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
+    for device in range(len(devices_in_cart)):
+        devices_in_cart[device]['count'] = count_goods[device]['count_goods']
 
     sum_order = 0
     for device in devices_in_cart:
-        sum_order += device.price
+        sum_order += device['price']
 
     return render(request, 'good/cart.html', {'devices_in_cart': devices_in_cart, 'sum_order': sum_order, 'count_goods': count_goods})
 
@@ -136,8 +141,8 @@ def nothing(request):
     return HttpResponse("Пока нет ничего")
 
 
-def delete(request):
-    s = Selling.objects.filter(User_id=request.user).update(in_carts=0)
+def delete(request, good_slug):
+    # s = Selling.objects.filter(User_id=request.user).update(in_carts=0)
 
     devices_in_cart = Goods.objects.filter(carts=request.user)
 
