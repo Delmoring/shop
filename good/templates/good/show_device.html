@@ -29,7 +29,7 @@
 				<div class="col-lg-5 order-3">
 					<div class="product_description">
 						<div class="product_category">{{ show_device.cat_name }}</div>
-						<div class="product_name">{{ show_device }}</div>
+						<div class="product_name">{{ show_device.model }}</div>
 						<div class="rating_r rating_r_4 product_rating"><i></i><i></i><i></i><i></i><i></i></div>
 						<div class="product_text"><p>{{ show_device.specifications }}</p></div>
 						<div class="order_info d-flex flex-row">
@@ -38,7 +38,7 @@
 
 									<!-- Product Quantity -->
 									<div class="product_quantity clearfix">
-										<span>Quantity: </span>
+										<span>Кол-во(not work): </span>
 										<input id="quantity_input" type="text" pattern="[0-9]*" value="1">
 										<div class="quantity_buttons">
 											<div id="quantity_inc_button" class="quantity_inc quantity_control"><i class="fas fa-chevron-up"></i></div>
@@ -49,7 +49,7 @@
 									<!-- Product Color -->
 									<ul class="product_color">
 										<li>
-											<span>Color: </span>
+											<span>Not work: </span>
 											<div class="color_mark_container"><div id="selected_color" class="color_mark"></div></div>
 											<div class="color_dropdown_button"><i class="fas fa-chevron-down"></i></div>
 
@@ -66,7 +66,6 @@
 								<div class="product_price">₽{{ show_device.price }}</div>
 								<div class="button_container">
 										<a href="{% url 'add_cart' show_device.slug %}">Добавить в корзину</a>
-<!--									<button type="button" class="button cart_button">Добавить в корзину</button>-->
 									<div class="product_fav"><i class="fas fa-heart"></i></div>
 								</div>
 

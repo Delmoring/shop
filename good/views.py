@@ -1,20 +1,22 @@
 from django.contrib.auth.models import User
 
-from django.contrib.auth.decorators import login_required
+
 from django.contrib.auth import logout, login
-from django.contrib.auth.decorators import login_required
+
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
-from django.http import HttpResponse, HttpResponseNotFound, Http404
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import  CreateView
 from django.db.models import F
 from django.forms.models import model_to_dict
 
-from .models import *
+from .models import Goods, Category, Selling
+
+
+
 
 
 
@@ -29,26 +31,34 @@ def index(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    devices_in_cart = Goods.objects.filter(carts=request.user)
-
+    count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
+    devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
+    for device in range(len(devices_in_cart)):
+        devices_in_cart[device]['count'] = count_goods[device]['count_goods']
+        devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device]['count_goods']
 
     sum_order = 0
     for device in devices_in_cart:
-        sum_order += device.price
+        sum_order += device['total_price']
 
     return render(request, 'good/index.html',
                   {'page_obj': page_obj, 'cats': cats, 'count': goods.count(), 'sum_order': sum_order})
 
 
 def show_good(request, good_slug):
-    devices_in_cart = Goods.objects.filter(carts=request.user)
+    show_device = get_object_or_404(Goods, slug=good_slug)
+
+    count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
+    devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
+    for device in range(len(devices_in_cart)):
+        devices_in_cart[device]['count'] = count_goods[device]['count_goods']
+        devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device]['count_goods']
 
     sum_order = 0
-
     for device in devices_in_cart:
-        sum_order += device.price
+        sum_order += device['total_price']
 
-    show_device = get_object_or_404(Goods, slug=good_slug)
+
     return render(request, 'good/show_device.html', {'show_device': show_device, 'sum_order': sum_order})
 
 
@@ -61,11 +71,15 @@ def show_category(request, cat_slug):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    devices_in_cart = Goods.objects.filter(carts=request.user)
+    count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
+    devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
+    for device in range(len(devices_in_cart)):
+        devices_in_cart[device]['count'] = count_goods[device]['count_goods']
+        devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device]['count_goods']
 
     sum_order = 0
     for device in devices_in_cart:
-        sum_order += device.price
+        sum_order += device['total_price']
 
     context = {
         'page_obj': page_obj,
@@ -102,8 +116,7 @@ def logout_user(request):
 
 
 def show_cart(request):
-    # devices_in_cart = Goods.objects.filter(carts=request.user)
-    # count_goods = Selling.objects.filter(User_id=request.user)
+
 
     count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
     devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
@@ -127,12 +140,15 @@ def add_cart(request, good_slug):
         Selling.objects.get_or_create(User_id=request.user, Goods_id=device.pk)
         Selling.objects.filter(User_id=request.user, Goods_id=device.pk).update(count_goods=F('count_goods')+1)
 
-        devices_in_cart = Goods.objects.filter(carts=request.user)
-
+        count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
+        devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
+        for device in range(len(devices_in_cart)):
+            devices_in_cart[device]['count'] = count_goods[device]['count_goods']
+            devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device]['count_goods']
 
         sum_order = 0
         for device in devices_in_cart:
-            sum_order += device.price
+            sum_order += device['total_price']
 
         return render(request, 'good/show_device.html', {'show_device': device, 'sum_order': sum_order})
     return HttpResponse("Для добавления товара в корзину необходимо быть авторизованным пользователем")
@@ -142,14 +158,4 @@ def nothing(request):
     return HttpResponse("Пока нет ничего")
 
 
-def delete(request, good_slug):
-    # s = Selling.objects.filter(User_id=request.user).update(in_carts=0)
 
-    devices_in_cart = Goods.objects.filter(carts=request.user)
-
-    sum_order = 0
-
-    for device in devices_in_cart:
-        sum_order += device.price
-
-    return render(request, 'good/cart.html', {'devices_in_cart': devices_in_cart, 'sum_order': sum_order})

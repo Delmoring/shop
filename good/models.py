@@ -42,4 +42,3 @@ class Selling(models.Model):
 
 
 
-# Selling.objects.filter(User_id=2, Goods_id=1).update(count_goods=F('count_goods')+1)
