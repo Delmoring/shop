@@ -109,10 +109,11 @@ def show_cart(request):
     devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
     for device in range(len(devices_in_cart)):
         devices_in_cart[device]['count'] = count_goods[device]['count_goods']
+        devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device]['count_goods']
 
     sum_order = 0
     for device in devices_in_cart:
-        sum_order += device['price']
+        sum_order += device['total_price']
 
     return render(request, 'good/cart.html', {'devices_in_cart': devices_in_cart, 'sum_order': sum_order, 'count_goods': count_goods})
 
