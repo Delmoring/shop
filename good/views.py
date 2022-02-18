@@ -26,23 +26,26 @@ cats = Category.objects.all()
 
 
 def index(request):
-    paginator = Paginator(goods, 2)
+    if request.user.is_authenticated:
+        paginator = Paginator(goods, 2)
 
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
 
-    count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
-    devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
-    for device in range(len(devices_in_cart)):
-        devices_in_cart[device]['count'] = count_goods[device]['count_goods']
-        devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device]['count_goods']
+        count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
+        devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
+        for device in range(len(devices_in_cart)):
+            devices_in_cart[device]['count'] = count_goods[device]['count_goods']
+            devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device]['count_goods']
 
-    sum_order = 0
-    for device in devices_in_cart:
-        sum_order += device['total_price']
+        sum_order = 0
+        for device in devices_in_cart:
+            sum_order += device['total_price']
 
-    return render(request, 'good/index.html',
+        return render(request, 'good/index.html',
                   {'page_obj': page_obj, 'cats': cats, 'count': goods.count(), 'sum_order': sum_order})
+    else:
+        return redirect('login')
 
 
 def show_good(request, good_slug):
