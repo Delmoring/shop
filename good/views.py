@@ -19,12 +19,12 @@ from .utils import SumOrderMixin
 class HomeGood(SumOrderMixin, ListView):
     model = Goods
     template_name = 'good/index.html'
-
-    def get(self, *args, **kwargs):
-        if not self.request.user.is_authenticated:
-            return redirect('login')
-        else:
-            return super(HomeGood, self).get(*args, **kwargs)
+    #
+    # def get(self, *args, **kwargs):
+    #     if not self.request.user.is_authenticated:
+    #         return redirect('login')
+    #     else:
+    #         return super(HomeGood, self).get(*args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -74,39 +74,51 @@ class ShowGood(SumOrderMixin, DetailView):
 #
 #     return render(request, 'good/show_device.html', {'show_device': show_device, 'sum_order': sum_order})
 
+class GoodCategory(SumOrderMixin, ListView):
+    model = Goods
+    template_name = 'good/index.html'
+    context_object_name = 'goods'
 
-def show_category(request, cat_slug):
-    c = Category.objects.get(slug=cat_slug)
-    goods = Goods.objects.filter(cat_id=c.pk)
+    def get_queryset(self):
+        return Goods.objects.filter(cat__slug=self.kwargs['cat_slug'])
 
-    paginator = Paginator(goods, 2)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(**kwargs)
+        return dict(list(context.items()) + list(c_def.items()))
 
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
-    devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
-    for device in range(len(devices_in_cart)):
-        devices_in_cart[device]['count'] = count_goods[device]['count_goods']
-        devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device]['count_goods']
-
-    sum_order = 0
-    for device in devices_in_cart:
-        sum_order += device['total_price']
-
-    context = {
-        'page_obj': page_obj,
-        'cats': cats,
-        'good': goods,
-        'count': goods.count(),
-        'sum_order': sum_order,
-
-    }
-
-    if len(goods) == 0:
-        raise Http404()
-
-    return render(request, 'good/index.html', context=context)
+# def show_category(request, cat_slug):
+#     c = Category.objects.get(slug=cat_slug)
+#     goods = Goods.objects.filter(cat_id=c.pk)
+#
+#     paginator = Paginator(goods, 2)
+#
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+#
+#     count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
+#     devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
+#     for device in range(len(devices_in_cart)):
+#         devices_in_cart[device]['count'] = count_goods[device]['count_goods']
+#         devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device]['count_goods']
+#
+#     sum_order = 0
+#     for device in devices_in_cart:
+#         sum_order += device['total_price']
+#
+#     context = {
+#         'page_obj': page_obj,
+#         'cats': cats,
+#         'good': goods,
+#         'count': goods.count(),
+#         'sum_order': sum_order,
+#
+#     }
+#
+#     if len(goods) == 0:
+#         raise Http404()
+#
+#     return render(request, 'good/index.html', context=context)
 
 
 class RegisterUser(CreateView):
@@ -127,20 +139,30 @@ def logout_user(request):
     logout(request)
     return redirect('login')
 
+class ShowCart(SumOrderMixin, ListView):
+    model = Goods
+    template_name = 'good/cart.html'
+    context_object_name = 'devices_in_cart'
 
-def show_cart(request):
-    count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
-    devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
-    for device in range(len(devices_in_cart)):
-        devices_in_cart[device]['count'] = count_goods[device]['count_goods']
-        devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device]['count_goods']
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    sum_order = 0
-    for device in devices_in_cart:
-        sum_order += device['total_price']
+        c_def = self.get_user_context(**kwargs)
+        return dict(list(context.items()) + list(c_def.items()))
 
-    return render(request, 'good/cart.html',
-                  {'devices_in_cart': devices_in_cart, 'sum_order': sum_order, 'count_goods': count_goods})
+# def show_cart(request):
+#     count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
+#     devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
+#     for device in range(len(devices_in_cart)):
+#         devices_in_cart[device]['count'] = count_goods[device]['count_goods']
+#         devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device]['count_goods']
+#
+#     sum_order = 0
+#     for device in devices_in_cart:
+#         sum_order += device['total_price']
+#
+#     return render(request, 'good/cart.html',
+#                   {'devices_in_cart': devices_in_cart, 'sum_order': sum_order, 'count_goods': count_goods})
 
 
 def add_cart(request, good_slug):

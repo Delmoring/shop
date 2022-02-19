@@ -30,6 +30,7 @@ class SumOrderMixin:
         data['cats'] = cats
         data['count'] = goods.count()
 
+
         return data
 
 
