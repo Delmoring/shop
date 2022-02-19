@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 
-
 from django.contrib.auth import logout, login
 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -14,52 +13,17 @@ from django.db.models import F
 from django.forms.models import model_to_dict
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Goods, Category, Selling
-
-goods = Goods.objects.all()
-cats = Category.objects.all()
-
-class SumOrderMixin:
-    def get_user_context(self, **kwargs):
-        data = kwargs
-        count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=self.request.user)))
-        devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=self.request.user)))
-        for device in range(len(devices_in_cart)):
-            devices_in_cart[device]['count'] = count_goods[device]['count_goods']
-            devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device]['count_goods']
-
-        sum_order = 0
-        for device in devices_in_cart:
-            sum_order += device['total_price']
-
-        data['sum_order'] = sum_order
+from .utils import SumOrderMixin
 
 
-
-        return data
-
-
-class HomeGood(ListView, SumOrderMixin):
-    paginate_by = 2
+class HomeGood(SumOrderMixin, ListView):
     model = Goods
     template_name = 'good/index.html'
-    context_object_name = 'goods'
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['cats'] = cats
-        context['count']: goods.count()
-        c_def = super().get_user_context(**kwargs)
+        c_def = self.get_user_context(**kwargs)
         return dict(list(context.items()) + list(c_def.items()))
-    # def get_queryset(self):
-    #     return Selling.objects.filter(User_id=self.request.user)
-
-
-
-
-
-
-
-
-
 
 
 # def index(request):
@@ -89,7 +53,6 @@ def show_good(request, good_slug):
     sum_order = 0
     for device in devices_in_cart:
         sum_order += device['total_price']
-
 
     return render(request, 'good/show_device.html', {'show_device': show_device, 'sum_order': sum_order})
 
@@ -148,8 +111,6 @@ def logout_user(request):
 
 
 def show_cart(request):
-
-
     count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
     devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
     for device in range(len(devices_in_cart)):
@@ -160,7 +121,8 @@ def show_cart(request):
     for device in devices_in_cart:
         sum_order += device['total_price']
 
-    return render(request, 'good/cart.html', {'devices_in_cart': devices_in_cart, 'sum_order': sum_order, 'count_goods': count_goods})
+    return render(request, 'good/cart.html',
+                  {'devices_in_cart': devices_in_cart, 'sum_order': sum_order, 'count_goods': count_goods})
 
 
 def add_cart(request, good_slug):
@@ -170,13 +132,14 @@ def add_cart(request, good_slug):
         device.carts.add(u)
 
         Selling.objects.get_or_create(User_id=request.user, Goods_id=device.pk)
-        Selling.objects.filter(User_id=request.user, Goods_id=device.pk).update(count_goods=F('count_goods')+1)
+        Selling.objects.filter(User_id=request.user, Goods_id=device.pk).update(count_goods=F('count_goods') + 1)
 
         count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
         devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
         for device in range(len(devices_in_cart)):
             devices_in_cart[device]['count'] = count_goods[device]['count_goods']
-            devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device]['count_goods']
+            devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device][
+                'count_goods']
 
         sum_order = 0
         for device in devices_in_cart:
@@ -188,6 +151,3 @@ def add_cart(request, good_slug):
 
 def nothing(request):
     return HttpResponse("Пока нет ничего")
-
-
-
