@@ -8,7 +8,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse, Http404, request
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, DetailView
 from django.db.models import F
 from django.forms.models import model_to_dict
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -47,20 +47,32 @@ class HomeGood(SumOrderMixin, ListView):
 #         return redirect('login')
 
 
-def show_good(request, good_slug):
-    show_device = get_object_or_404(Goods, slug=good_slug)
+class ShowGood(SumOrderMixin, DetailView):
+    model = Goods
+    template_name = 'good/show_device.html'
+    slug_url_kwarg = 'good_slug'
+    context_object_name = 'show_device'
 
-    count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
-    devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
-    for device in range(len(devices_in_cart)):
-        devices_in_cart[device]['count'] = count_goods[device]['count_goods']
-        devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device]['count_goods']
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(**kwargs)
+        return dict(list(context.items()) + list(c_def.items()))
 
-    sum_order = 0
-    for device in devices_in_cart:
-        sum_order += device['total_price']
 
-    return render(request, 'good/show_device.html', {'show_device': show_device, 'sum_order': sum_order})
+# def show_good(request, good_slug):
+#     show_device = get_object_or_404(Goods, slug=good_slug)
+#
+#     count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
+#     devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
+#     for device in range(len(devices_in_cart)):
+#         devices_in_cart[device]['count'] = count_goods[device]['count_goods']
+#         devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device]['count_goods']
+#
+#     sum_order = 0
+#     for device in devices_in_cart:
+#         sum_order += device['total_price']
+#
+#     return render(request, 'good/show_device.html', {'show_device': show_device, 'sum_order': sum_order})
 
 
 def show_category(request, cat_slug):
