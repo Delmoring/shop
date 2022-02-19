@@ -6,7 +6,7 @@ from django.urls import path, re_path
 from .views import *
 
 urlpatterns = [
-                  path('', index, name='index'),
+                  path('', HomeGood.as_view(), name='index'),
                   path('show_good/<slug:good_slug>/', show_good, name='show_good'),
                   path('show_category/<slug:cat_slug>', show_category, name='show_category'),
                   path('register/', RegisterUser.as_view(), name='register'),
