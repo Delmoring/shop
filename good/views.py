@@ -8,10 +8,12 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse, Http404, request
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView
 from django.db.models import F
 from django.forms.models import model_to_dict
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+from .forms import SellingForm
 from .models import Goods, Category, Selling
 from .utils import SumOrderMixin
 
@@ -19,12 +21,12 @@ from .utils import SumOrderMixin
 class HomeGood(SumOrderMixin, ListView):
     model = Goods
     template_name = 'good/index.html'
-    #
-    # def get(self, *args, **kwargs):
-    #     if not self.request.user.is_authenticated:
-    #         return redirect('login')
-    #     else:
-    #         return super(HomeGood, self).get(*args, **kwargs)
+
+    def get(self, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('login')
+        else:
+            return super(HomeGood, self).get(*args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -87,6 +89,7 @@ class GoodCategory(SumOrderMixin, ListView):
         c_def = self.get_user_context(**kwargs)
         return dict(list(context.items()) + list(c_def.items()))
 
+
 # def show_category(request, cat_slug):
 #     c = Category.objects.get(slug=cat_slug)
 #     goods = Goods.objects.filter(cat_id=c.pk)
@@ -139,6 +142,7 @@ def logout_user(request):
     logout(request)
     return redirect('login')
 
+
 class ShowCart(SumOrderMixin, ListView):
     model = Goods
     template_name = 'good/cart.html'
@@ -146,9 +150,9 @@ class ShowCart(SumOrderMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-
         c_def = self.get_user_context(**kwargs)
         return dict(list(context.items()) + list(c_def.items()))
+
 
 # def show_cart(request):
 #     count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
@@ -164,29 +168,80 @@ class ShowCart(SumOrderMixin, ListView):
 #     return render(request, 'good/cart.html',
 #                   {'devices_in_cart': devices_in_cart, 'sum_order': sum_order, 'count_goods': count_goods})
 
+class AddCart(SumOrderMixin, CreateView):
+    form_class = SellingForm
+    slug_url_kwarg = 'good_slug'
+    template_name = 'good/add_cart.html'
 
-def add_cart(request, good_slug):
-    if request.user.is_authenticated:
-        device = get_object_or_404(Goods, slug=good_slug)
-        u = User.objects.get(username=request.user)
-        device.carts.add(u)
 
-        Selling.objects.get_or_create(User_id=request.user, Goods_id=device.pk)
-        Selling.objects.filter(User_id=request.user, Goods_id=device.pk).update(count_goods=F('count_goods') + 1)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        f = SellingForm(self.request.POST)
+        if f.is_valid():
+            new_author = f.save()
+            new_author.count_goods = Selling.objects.filter(User_id=request.user).update(count_goods=F('count_goods'))
+            new_author.save()
+            f.save_m2m()
 
-        count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
-        devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
-        for device in range(len(devices_in_cart)):
-            devices_in_cart[device]['count'] = count_goods[device]['count_goods']
-            devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device][
-                'count_goods']
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(**kwargs)
+        return dict(list(context.items()) + list(c_def.items()))
 
-        sum_order = 0
-        for device in devices_in_cart:
-            sum_order += device['total_price']
 
-        return render(request, 'good/show_device.html', {'show_device': device, 'sum_order': sum_order})
-    return HttpResponse("Для добавления товара в корзину необходимо быть авторизованным пользователем")
+
+
+#         good_slug = self.kwargs.get('good_slug', None)
+#         device = get_object_or_404(Goods, slug=good_slug)
+#         u = User.objects.get(username=self.request.user)
+#         return device.carts.add(u)
+
+# class AddCart(SumOrderMixin, DetailView):
+#     model = Goods
+#     template_name = 'good/show_device.html'
+#
+#     context_object_name = 'device'
+#
+#     def get(self, *args, **kwargs):
+#         if not self.request.user.is_authenticated:
+#             return redirect('login')
+#         else:
+#             return redirect('cart')
+#
+#     def get_queryset(self, **kwargs):
+#         good_slug = self.kwargs.get('good_slug', None)
+#         device = get_object_or_404(Goods, slug=good_slug)
+#         u = User.objects.get(username=self.request.user)
+#         return device.carts.add(u)
+#
+#     def get_context_data(self, *, object_list=None, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['good_slug'] = self.kwargs['good_slug']
+#         c_def = self.get_user_context(**kwargs)
+#         return dict(list(context.items()) + list(c_def.items()))
+
+
+# def add_cart(request, good_slug):
+#
+#     if request.user.is_authenticated:
+#         device = get_object_or_404(Goods, slug=good_slug)
+#         u = User.objects.get(username=request.user)
+#         device.carts.add(u)
+#
+        # Selling.objects.get_or_create(User_id=request.user, Goods_id=device.pk)
+        # Selling.objects.filter(User_id=request.user, Goods_id=device.pk).update(count_goods=F('count_goods') + 1)
+#
+#         count_goods = list(map(model_to_dict, Selling.objects.filter(User_id=request.user)))
+#         devices_in_cart = list(map(model_to_dict, Goods.objects.filter(carts=request.user)))
+#         for device in range(len(devices_in_cart)):
+#             devices_in_cart[device]['count'] = count_goods[device]['count_goods']
+#             devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device][
+#                 'count_goods']
+#
+#         sum_order = 0
+#         for device in devices_in_cart:
+#             sum_order += device['total_price']
+#
+#         return render(request, 'good/show_device.html', {'show_device': device, 'sum_order': sum_order})
+#     return HttpResponse("Для добавления товара в корзину необходимо быть авторизованным пользователем")
 
 
 def nothing(request):

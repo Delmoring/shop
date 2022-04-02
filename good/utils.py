@@ -10,6 +10,7 @@ from django.forms.models import model_to_dict
 class SumOrderMixin:
     paginate_by = 2
 
+
     def get_user_context(self, **kwargs):
         goods = Goods.objects.all()
         cats = Category.objects.all()
@@ -22,6 +23,8 @@ class SumOrderMixin:
             devices_in_cart[device]['total_price'] = devices_in_cart[device]['price'] * count_goods[device][
                 'count_goods']
 
+
+
         sum_order = 0
         for device in devices_in_cart:
             sum_order += device['total_price']
@@ -29,7 +32,7 @@ class SumOrderMixin:
         data['sum_order'] = sum_order
         data['cats'] = cats
         data['count'] = goods.count()
-
+        data['devices_in_cart'] = devices_in_cart
 
         return data
 
