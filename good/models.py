@@ -39,7 +39,3 @@ class Selling(models.Model):
     Goods = models.ForeignKey(Goods, on_delete=models.CASCADE)
     User = models.ForeignKey(User, on_delete=models.CASCADE)
     count_goods = models.IntegerField(default=False)
-    def get_absolute_url(self):
-        return reverse('cart')
-
-

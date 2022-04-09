@@ -6,7 +6,6 @@ from .models import *
 class GoodsAdmin(admin.ModelAdmin):
     list_display = ('id', 'model', 'time_create', 'photo', 'is_published')
     list_display_links = ('id', 'model')
-    # search_fields = (['cat_name'])
     list_editable = ('is_published',)
     list_filter = ('is_published', 'time_create')
     prepopulated_fields = {"slug": ("model",)}
